@@ -1,0 +1,211 @@
+# Fashion E-Commerce
+
+Dự án website thương mại điện tử thời trang full-stack, xây dựng với Node.js/Express (backend) và React/Vite (frontend).
+
+---
+
+## Tính năng
+
+**Người dùng**
+- Đăng ký, đăng nhập, xác thực email, quên mật khẩu
+- Duyệt sản phẩm theo danh mục, tìm kiếm, lọc
+- Giỏ hàng, đặt hàng, theo dõi đơn hàng
+- Thanh toán qua Stripe
+- Chatbot hỗ trợ tư vấn (OpenAI)
+- Quản lý hồ sơ cá nhân
+
+**Admin**
+- Dashboard thống kê doanh thu, đơn hàng
+- Quản lý sản phẩm, danh mục, đơn hàng, người dùng
+- Quản lý mã giảm giá (coupon)
+- Xuất báo cáo Excel
+- Cấu hình chatbot
+
+---
+
+## Tech Stack
+
+| Phần | Công nghệ |
+|------|-----------|
+| Frontend | React 19, Vite, Redux Toolkit, React Router, Tailwind CSS |
+| Backend | Node.js, Express 5, MongoDB, Mongoose |
+| Auth | JWT, Bcrypt |
+| Payment | Stripe |
+| Email | Nodemailer (Gmail) |
+| AI Chatbot | OpenAI API |
+| File upload | Multer |
+
+---
+
+## Yêu cầu môi trường
+
+- Node.js >= 18
+- MongoDB Atlas account (hoặc local MongoDB)
+- Tài khoản Stripe, OpenAI, Gmail App Password
+
+---
+
+## Cài đặt và chạy
+
+### 1. Clone repo
+
+```bash
+git clone https://github.com/HoanqHaiw/final_student_ecommerce.git
+cd final_student_ecommerce
+```
+
+### 2. Cài đặt Backend
+
+```bash
+cd fashion-ecommerce-backend
+npm install
+```
+
+Tạo file `.env` từ mẫu:
+
+```bash
+cp .env.example .env
+```
+
+Điền thông tin vào `.env`:
+
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/?appName=Cluster0
+JWT_SECRET=your_jwt_secret_key_here
+
+# Stripe
+STRIPE_SECRET_KEY=sk_test_...
+
+# Nodemailer Gmail
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=xxxx xxxx xxxx xxxx
+
+# OpenAI
+OPENAI_API_KEY=sk-proj-...
+
+# URL frontend
+CLIENT_URL=http://localhost:5173
+```
+
+Chạy backend:
+
+```bash
+npm run dev       # development (nodemon)
+npm start         # production
+```
+
+Backend chạy tại: `http://localhost:5000`
+
+---
+
+### 3. Cài đặt Frontend
+
+Mở terminal mới:
+
+```bash
+cd fashion-ecommerce-frontend
+npm install
+```
+
+Tạo file `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Nội dung `.env`:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_CLIENT_URL=http://localhost:5173
+```
+
+Chạy frontend:
+
+```bash
+npm run dev       # development
+npm run build     # build production
+npm run preview   # preview bản build
+```
+
+Frontend chạy tại: `http://localhost:5173`
+
+---
+
+## Cấu trúc thư mục
+
+```
+final_student_ecommerce/
+├── fashion-ecommerce-backend/
+│   ├── src/
+│   │   ├── config/          # Kết nối database
+│   │   ├── controllers/     # Xử lý logic request
+│   │   │   ├── admin/       # Controller dành cho admin
+│   │   │   └── user/        # Controller dành cho user
+│   │   ├── middlewares/     # Auth, error, validation
+│   │   ├── models/          # Schema MongoDB
+│   │   ├── routes/          # Định nghĩa API routes
+│   │   │   └── admin/       # Routes admin
+│   │   ├── services/        # Business logic
+│   │   └── utils/           # Tiện ích (generateToken...)
+│   ├── uploads/             # File upload lưu tại đây
+│   ├── .env.example
+│   └── package.json
+│
+├── fashion-ecommerce-frontend/
+│   ├── src/
+│   │   ├── components/      # Component tái sử dụng
+│   │   ├── pages/           # Các trang (Home, Cart, Orders...)
+│   │   ├── redux/           # Redux store, slices
+│   │   ├── services/        # Gọi API (axios)
+│   │   └── assets/          # Hình ảnh, icon
+│   ├── public/
+│   ├── .env.example
+│   └── package.json
+│
+├── Fashion_Ecommerce_API.postman_collection.json
+├── Fashion_Ecommerce_PUBLIC_API.postman_collection.json
+├── chatbot_service_text.txt
+└── README.md
+```
+
+---
+
+## API
+
+
+
+Base URL: `http://localhost:5000/api`
+
+| Nhóm | Prefix |
+|------|--------|
+| Auth | `/api/auth` |
+| Sản phẩm | `/api/products` |
+| Danh mục | `/api/categories` |
+| Giỏ hàng | `/api/cart` |
+| Đơn hàng | `/api/orders` |
+| Thanh toán | `/api/payment` |
+| Chatbot | `/api/chatbot` |
+| Admin | `/api/admin/*` |
+
+---
+
+## Biến môi trường quan trọng
+
+
+
+| Biến | Mô tả |
+|------|-------|
+| `MONGO_URI` | Connection string MongoDB Atlas |
+| `JWT_SECRET` | Chuỗi bí mật ký JWT (dài, ngẫu nhiên) |
+| `STRIPE_SECRET_KEY` | Secret key từ Stripe Dashboard |
+| `OPENAI_API_KEY` | API key từ platform.openai.com |
+| `EMAIL_USER` | Gmail dùng để gửi mail |
+| `EMAIL_PASS` | Gmail App Password (không phải password Gmail) |
+
+---
+
+## Tác giả
+
+Hoang Van Hai — Đồ án tốt nghiệp

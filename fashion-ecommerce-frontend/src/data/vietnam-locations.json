@@ -1,0 +1,1329 @@
+﻿[
+    {
+        "name": "Hà Nội",
+        "districts": [
+            {
+                "name": "Quận Ba Đình",
+                "wards": [
+                    "Phúc Xá",
+                    "Trúc Bạch",
+                    "Vĩnh Phúc",
+                    "Cống Vị",
+                    "Đội Cấn"
+                ]
+            },
+            {
+                "name": "Quận Đống Đa",
+                "wards": [
+                    "Cát Linh",
+                    "Ô Chợ Dừa",
+                    "Kim Liên",
+                    "Thịnh Quang",
+                    "Khâm Thiên"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hồ Chí Minh",
+        "districts": [
+            {
+                "name": "Quận 1",
+                "wards": [
+                    "Phường Bến Nghé",
+                    "Phường Bến Thành",
+                    "Phường Cầu Ông Lãnh"
+                ]
+            },
+            {
+                "name": "Quận 3",
+                "wards": [
+                    "Phường Võ Thị Sáu",
+                    "Phường Nguyễn Thái Bình",
+                    "Phường Phạm Ngũ Lão"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Đà Nẵng",
+        "districts": [
+            {
+                "name": "Quận Hải Châu",
+                "wards": [
+                    "Phường Thạch Thang",
+                    "Phường Thuận Phước",
+                    "Phường Hòa Thuận Tây"
+                ]
+            },
+            {
+                "name": "Quận Sơn Trà",
+                "wards": [
+                    "Phường Thọ Quang",
+                    "Phường Mân Thái",
+                    "Phường Nại Hiên Đông"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hải Phòng",
+        "districts": [
+            {
+                "name": "Quận Lê Chân",
+                "wards": [
+                    "Phường Máy Tơ",
+                    "Phường Đông Hải",
+                    "Phường Cát Dài"
+                ]
+            },
+            {
+                "name": "Quận Ngô Quyền",
+                "wards": [
+                    "Phường Máy Chai",
+                    "Phường Cầu Đất",
+                    "Phường Gia Viên"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Cần Thơ",
+        "districts": [
+            {
+                "name": "Quận Ninh Kiều",
+                "wards": [
+                    "Phường An Phú",
+                    "Phường An Khánh",
+                    "Phường Xuân Khánh"
+                ]
+            },
+            {
+                "name": "Quận Cái Răng",
+                "wards": [
+                    "Phường An Bình",
+                    "Phường Hưng Lợi",
+                    "Phường Lê Bình"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "An Giang",
+        "districts": [
+            {
+                "name": "Thành phố Long Xuyên",
+                "wards": [
+                    "Phường Bình Khánh",
+                    "Phường Mỹ Bình",
+                    "Phường Mỹ Hòa"
+                ]
+            },
+            {
+                "name": "Huyện Châu Đốc",
+                "wards": [
+                    "Phường Châu Phú A",
+                    "Phường Vĩnh Mỹ",
+                    "Phường Châu Phú B"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bà Rịa - Vũng Tàu",
+        "districts": [
+            {
+                "name": "Thành phố Vũng Tàu",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Thị xã Bà Rịa",
+                "wards": [
+                    "Phường Long Tâm",
+                    "Phường Phước Hiệp",
+                    "Phường Long Hương"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bắc Giang",
+        "districts": [
+            {
+                "name": "Thành phố Bắc Giang",
+                "wards": [
+                    "Phường Lê Lợi",
+                    "Phường Hoàng Văn Thụ",
+                    "Phường Xương Giang"
+                ]
+            },
+            {
+                "name": "Huyện Lạng Giang",
+                "wards": [
+                    "Xã Hương Sơn",
+                    "Xã Tân Thanh",
+                    "Xã Tân Thịnh"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bắc Kạn",
+        "districts": [
+            {
+                "name": "Thành phố Bắc Kạn",
+                "wards": [
+                    "Phường Đức Xuân",
+                    "Phường Phùng Chí Kiên",
+                    "Phường Sông Cầu"
+                ]
+            },
+            {
+                "name": "Huyện Ba Bể",
+                "wards": [
+                    "Xã Nam Mẫu",
+                    "Xã Chu Hương",
+                    "Xã Mỹ Phương"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bắc Ninh",
+        "districts": [
+            {
+                "name": "Thành phố Bắc Ninh",
+                "wards": [
+                    "Phường Vũ Ninh",
+                    "Phường Đại Phúc",
+                    "Phường Khương Đông"
+                ]
+            },
+            {
+                "name": "Huyện Thuận Thành",
+                "wards": [
+                    "Xã Ninh Xá",
+                    "Xã Trạm Lộ",
+                    "Xã Nghĩa Đạo"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bến Tre",
+        "districts": [
+            {
+                "name": "Thành phố Bến Tre",
+                "wards": [
+                    "Phường Phú Khương",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Giồng Trôm",
+                "wards": [
+                    "Xã Châu Hòa",
+                    "Xã Vĩnh Bình",
+                    "Xã Hưng Nhượng"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bạc Liêu",
+        "districts": [
+            {
+                "name": "Thành phố Bạc Liêu",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Vĩnh Lợi",
+                "wards": [
+                    "Thị trấn Châu Hưng",
+                    "Xã Vĩnh Lợi",
+                    "Xã Vĩnh Quới"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bình Định",
+        "districts": [
+            {
+                "name": "Thành phố Quy Nhơn",
+                "wards": [
+                    "Phường Trần Hưng Đạo",
+                    "Phường Nhơn Bình",
+                    "Phường Nhơn Phú"
+                ]
+            },
+            {
+                "name": "Huyện An Nhơn",
+                "wards": [
+                    "Thị trấn An Nhơn",
+                    "Xã Nhơn Hưng",
+                    "Xã Nhơn Phúc"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bình Dương",
+        "districts": [
+            {
+                "name": "Thành phố Thủ Dầu Một",
+                "wards": [
+                    "Phường Phú Cường",
+                    "Phường Hiệp Thành",
+                    "Phường Phú Hòa"
+                ]
+            },
+            {
+                "name": "Thị xã Dĩ An",
+                "wards": [
+                    "Phường Dĩ An",
+                    "Phường An Bình",
+                    "Phường Tân Đông Hiệp"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bình Phước",
+        "districts": [
+            {
+                "name": "Thị xã Đồng Xoài",
+                "wards": [
+                    "Phường Tân Bình",
+                    "Phường Tân Phú",
+                    "Phường Tân Xuân"
+                ]
+            },
+            {
+                "name": "Huyện Phước Long",
+                "wards": [
+                    "Thị trấn Phước Bình",
+                    "Xã Long Giang",
+                    "Xã Long Hà"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Bình Thuận",
+        "districts": [
+            {
+                "name": "Thành phố Phan Thiết",
+                "wards": [
+                    "Phường Phú Hài",
+                    "Phường Mũi Né",
+                    "Phường Đức Long"
+                ]
+            },
+            {
+                "name": "Huyện Hàm Thuận Nam",
+                "wards": [
+                    "Xã Hàm Liêm",
+                    "Xã Hàm Chính",
+                    "Xã Hàm Mỹ"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Cà Mau",
+        "districts": [
+            {
+                "name": "Thành phố Cà Mau",
+                "wards": [
+                    "Phường 5",
+                    "Phường 7",
+                    "Phường 8"
+                ]
+            },
+            {
+                "name": "Huyện Thới Bình",
+                "wards": [
+                    "Thị trấn Thới Bình",
+                    "Xã Biển Bạch",
+                    "Xã Tân Phú"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Cao Bằng",
+        "districts": [
+            {
+                "name": "Thành phố Cao Bằng",
+                "wards": [
+                    "Phường Sông Bằng",
+                    "Phường Hợp Giang",
+                    "Phường Cải Viên"
+                ]
+            },
+            {
+                "name": "Huyện Bảo Lâm",
+                "wards": [
+                    "Thị trấn Pác Miầu",
+                    "Xã Đức Hạnh",
+                    "Xã Lý Bôn"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Đắk Lắk",
+        "districts": [
+            {
+                "name": "Thành phố Buôn Ma Thuột",
+                "wards": [
+                    "Phường Tân Lợi",
+                    "Phường Thắng Lợi",
+                    "Phường Thành Nhất"
+                ]
+            },
+            {
+                "name": "Huyện Buôn Đôn",
+                "wards": [
+                    "Thị trấn Buôn Đôn",
+                    "Xã Ea Wer",
+                    "Xã Krông Na"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Đắk Nông",
+        "districts": [
+            {
+                "name": "Thị xã Gia Nghĩa",
+                "wards": [
+                    "Phường Nghĩa Phú",
+                    "Phường Nghĩa Thành",
+                    "Phường Nghĩa Tân"
+                ]
+            },
+            {
+                "name": "Huyện Đắk Glong",
+                "wards": [
+                    "Xã Đắk Som",
+                    "Xã Đắk R’La",
+                    "Xã Quảng Hòa"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Điện Biên",
+        "districts": [
+            {
+                "name": "Thành phố Điện Biên Phủ",
+                "wards": [
+                    "Phường Mường Thanh",
+                    "Phường Him Lam",
+                    "Phường Noong Bua"
+                ]
+            },
+            {
+                "name": "Huyện Mường Chà",
+                "wards": [
+                    "Thị trấn Mường Chà",
+                    "Xã Huổi Lèng",
+                    "Xã Ma Thì Hồ"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Đồng Nai",
+        "districts": [
+            {
+                "name": "Thành phố Biên Hòa",
+                "wards": [
+                    "Phường An Bình",
+                    "Phường Tân Phong",
+                    "Phường Trảng Dài"
+                ]
+            },
+            {
+                "name": "Huyện Long Thành",
+                "wards": [
+                    "Thị trấn Long Thành",
+                    "Xã An Phước",
+                    "Xã Bình An"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Đồng Tháp",
+        "districts": [
+            {
+                "name": "Thành phố Cao Lãnh",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Thị xã Hồng Ngự",
+                "wards": [
+                    "Phường An Lộc",
+                    "Phường An Thạnh",
+                    "Phường An Lạc"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Gia Lai",
+        "districts": [
+            {
+                "name": "Thành phố Pleiku",
+                "wards": [
+                    "Phường Yên Thế",
+                    "Phường Ia Kring",
+                    "Phường Hoa Lư"
+                ]
+            },
+            {
+                "name": "Huyện Chư Sê",
+                "wards": [
+                    "Thị trấn Chư Sê",
+                    "Xã Ia Tiêm",
+                    "Xã Ia Glai"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hà Giang",
+        "districts": [
+            {
+                "name": "Thành phố Hà Giang",
+                "wards": [
+                    "Phường Trần Phú",
+                    "Phường Minh Khai",
+                    "Phường Nguyễn Trãi"
+                ]
+            },
+            {
+                "name": "Huyện Đồng Văn",
+                "wards": [
+                    "Thị trấn Đồng Văn",
+                    "Xã Lũng Cú",
+                    "Xã Phố Bảng"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hà Nam",
+        "districts": [
+            {
+                "name": "Thị xã Phủ Lý",
+                "wards": [
+                    "Phường Châu Sơn",
+                    "Phường Lương Khánh Thiện",
+                    "Phường Lam Hạ"
+                ]
+            },
+            {
+                "name": "Huyện Duy Tiên",
+                "wards": [
+                    "Thị trấn Hòa Mạc",
+                    "Xã Mộc Nam",
+                    "Xã Tiên Nội"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hà Tĩnh",
+        "districts": [
+            {
+                "name": "Thành phố Hà Tĩnh",
+                "wards": [
+                    "Phường Nam Hà",
+                    "Phường Bắc Hà",
+                    "Phường Đại Nài"
+                ]
+            },
+            {
+                "name": "Huyện Hương Sơn",
+                "wards": [
+                    "Thị trấn Phố Châu",
+                    "Xã Phúc Đồng",
+                    "Xã Sơn Tiến"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hải Dương",
+        "districts": [
+            {
+                "name": "Thành phố Hải Dương",
+                "wards": [
+                    "Phường Tân Bình",
+                    "Phường Nam Đồng",
+                    "Phường Thanh Bình"
+                ]
+            },
+            {
+                "name": "Huyện Kim Thành",
+                "wards": [
+                    "Thị trấn Phú Thái",
+                    "Xã Thượng Vũ",
+                    "Xã Kim Lương"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hậu Giang",
+        "districts": [
+            {
+                "name": "Thành phố Vị Thanh",
+                "wards": [
+                    "Phường I",
+                    "Phường II",
+                    "Phường III"
+                ]
+            },
+            {
+                "name": "Huyện Châu Thành A",
+                "wards": [
+                    "Xã Đông Phước A",
+                    "Xã Đông Phước B",
+                    "Xã Tân Phú Thạnh"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hòa Bình",
+        "districts": [
+            {
+                "name": "Thành phố Hòa Bình",
+                "wards": [
+                    "Phường Chăm Mát",
+                    "Phường Dân Chủ",
+                    "Phường Hữu Nghị"
+                ]
+            },
+            {
+                "name": "Huyện Lương Sơn",
+                "wards": [
+                    "Thị trấn Lương Sơn",
+                    "Xã Hòa Sơn",
+                    "Xã Cao Dương"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Hưng Yên",
+        "districts": [
+            {
+                "name": "Thành phố Hưng Yên",
+                "wards": [
+                    "Phường Lam Sơn",
+                    "Phường Quang Trung",
+                    "Phường Hồng Châu"
+                ]
+            },
+            {
+                "name": "Huyện Mỹ Hào",
+                "wards": [
+                    "Thị trấn Bần Yên Nhân",
+                    "Xã Dị Chế",
+                    "Xã Trưng Trắc"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Khánh Hòa",
+        "districts": [
+            {
+                "name": "Thành phố Nha Trang",
+                "wards": [
+                    "Phường Phước Hòa",
+                    "Phường Vĩnh Hải",
+                    "Phường Vĩnh Phước"
+                ]
+            },
+            {
+                "name": "Huyện Cam Lâm",
+                "wards": [
+                    "Thị trấn Cam Đức",
+                    "Xã Cam Thành Bắc",
+                    "Xã Cam Thành Nam"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Kiên Giang",
+        "districts": [
+            {
+                "name": "Thành phố Rạch Giá",
+                "wards": [
+                    "Phường Vĩnh Bảo",
+                    "Phường Vĩnh Thanh",
+                    "Phường An Hòa"
+                ]
+            },
+            {
+                "name": "Huyện Hòn Đất",
+                "wards": [
+                    "Thị trấn Hòn Đất",
+                    "Xã Mỹ Thái",
+                    "Xã Mỹ Hiệp"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Kon Tum",
+        "districts": [
+            {
+                "name": "Thành phố Kon Tum",
+                "wards": [
+                    "Phường Quyết Thắng",
+                    "Phường Duy Tân",
+                    "Phường Thắng Lợi"
+                ]
+            },
+            {
+                "name": "Huyện Kon Plông",
+                "wards": [
+                    "Thị trấn Măng Đen",
+                    "Xã Đăk Long",
+                    "Xã Măng Bút"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Lai Châu",
+        "districts": [
+            {
+                "name": "Thành phố Lai Châu",
+                "wards": [
+                    "Phường Đoàn Kết",
+                    "Phường Quyết Thắng",
+                    "Phường Tân Phong"
+                ]
+            },
+            {
+                "name": "Huyện Tam Đường",
+                "wards": [
+                    "Thị trấn Tam Đường",
+                    "Xã Thèn Sin",
+                    "Xã Tả Lèng"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Lào Cai",
+        "districts": [
+            {
+                "name": "Thành phố Lào Cai",
+                "wards": [
+                    "Phường Phố Mới",
+                    "Phường Kim Tân",
+                    "Phường Cốc Lếu"
+                ]
+            },
+            {
+                "name": "Huyện Bát Xát",
+                "wards": [
+                    "Thị trấn Bát Xát",
+                    "Xã Mường Vi",
+                    "Xã Cốc San"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Lạng Sơn",
+        "districts": [
+            {
+                "name": "Thành phố Lạng Sơn",
+                "wards": [
+                    "Phường Hoàng Văn Thụ",
+                    "Phường Đông Kinh",
+                    "Phường Tam Thanh"
+                ]
+            },
+            {
+                "name": "Huyện Tràng Định",
+                "wards": [
+                    "Thị trấn Thất Khê",
+                    "Xã Đội Cấn",
+                    "Xã Chi Lăng"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Lâm Đồng",
+        "districts": [
+            {
+                "name": "Thành phố Đà Lạt",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Bảo Lâm",
+                "wards": [
+                    "Thị trấn Lộc Thắng",
+                    "Xã Lộc Thành",
+                    "Xã Lộc Phú"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Long An",
+        "districts": [
+            {
+                "name": "Thành phố Tân An",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Đức Hòa",
+                "wards": [
+                    "Thị trấn Đức Hòa",
+                    "Xã Mỹ Hạnh Nam",
+                    "Xã Hựu Thạnh"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Nam Định",
+        "districts": [
+            {
+                "name": "Thành phố Nam Định",
+                "wards": [
+                    "Phường Trần Hưng Đạo",
+                    "Phường Vị Hoàng",
+                    "Phường Nam Định"
+                ]
+            },
+            {
+                "name": "Huyện Hải Hậu",
+                "wards": [
+                    "Thị trấn Yên Định",
+                    "Xã Hải An",
+                    "Xã Hải Đông"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Nghệ An",
+        "districts": [
+            {
+                "name": "Thành phố Vinh",
+                "wards": [
+                    "Phường Quang Trung",
+                    "Phường Hồng Sơn",
+                    "Phường Trường Thi"
+                ]
+            },
+            {
+                "name": "Huyện Diễn Châu",
+                "wards": [
+                    "Thị trấn Diễn Châu",
+                    "Xã Diễn An",
+                    "Xã Diễn Thành"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Ninh Bình",
+        "districts": [
+            {
+                "name": "Thành phố Ninh Bình",
+                "wards": [
+                    "Phường Nam Thành",
+                    "Phường Tân Thành",
+                    "Phường Bích Đào"
+                ]
+            },
+            {
+                "name": "Huyện Nho Quan",
+                "wards": [
+                    "Thị trấn Nho Quan",
+                    "Xã Gia Lâm",
+                    "Xã Thạch Bình"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Ninh Thuận",
+        "districts": [
+            {
+                "name": "Thành phố Phan Rang - Tháp Chàm",
+                "wards": [
+                    "Phường Mỹ Bình",
+                    "Phường Bình Sơn",
+                    "Phường Đài Sơn"
+                ]
+            },
+            {
+                "name": "Huyện Ninh Sơn",
+                "wards": [
+                    "Thị trấn Tân Sơn",
+                    "Xã Lâm Sơn",
+                    "Xã Nhơn Sơn"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Phú Thọ",
+        "districts": [
+            {
+                "name": "Thành phố Việt Trì",
+                "wards": [
+                    "Phường Bạch Hạc",
+                    "Phường Minh Nông",
+                    "Phường Vân Cơ"
+                ]
+            },
+            {
+                "name": "Huyện Thanh Ba",
+                "wards": [
+                    "Thị trấn Thanh Ba",
+                    "Xã Đông Lĩnh",
+                    "Xã Vũ Yển"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Phú Yên",
+        "districts": [
+            {
+                "name": "Thành phố Tuy Hòa",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Tuy An",
+                "wards": [
+                    "Thị trấn Chí Thạnh",
+                    "Xã An Ninh Tây",
+                    "Xã An Ninh Đông"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Quảng Bình",
+        "districts": [
+            {
+                "name": "Thành phố Đồng Hới",
+                "wards": [
+                    "Phường Đồng Mỹ",
+                    "Phường Nam Lý",
+                    "Phường Bắc Lý"
+                ]
+            },
+            {
+                "name": "Huyện Lệ Thủy",
+                "wards": [
+                    "Thị trấn Kiến Giang",
+                    "Xã Mỹ Thủy",
+                    "Xã Ngư Thủy Bắc"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Quảng Nam",
+        "districts": [
+            {
+                "name": "Thành phố Tam Kỳ",
+                "wards": [
+                    "Phường An Mỹ",
+                    "Phường An Xuân",
+                    "Phường An Sơn"
+                ]
+            },
+            {
+                "name": "Thị xã Điện Bàn",
+                "wards": [
+                    "Phường Vĩnh Điện",
+                    "Phường Điện Ngọc",
+                    "Phường Điện Nam Bắc"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Quảng Ngãi",
+        "districts": [
+            {
+                "name": "Thành phố Quảng Ngãi",
+                "wards": [
+                    "Phường Trần Hưng Đạo",
+                    "Phường Lê Hồng Phong",
+                    "Phường Nguyễn Nghiêm"
+                ]
+            },
+            {
+                "name": "Huyện Tư Nghĩa",
+                "wards": [
+                    "Thị trấn La Hà",
+                    "Xã Nghĩa An",
+                    "Xã Nghĩa Hà"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Quảng Ninh",
+        "districts": [
+            {
+                "name": "Thành phố Hạ Long",
+                "wards": [
+                    "Phường Bãi Cháy",
+                    "Phường Hồng Gai",
+                    "Phường Hà Khánh"
+                ]
+            },
+            {
+                "name": "Thị xã Quảng Yên",
+                "wards": [
+                    "Phường Quảng Yên",
+                    "Phường Phong Hải",
+                    "Phường Hải Yên"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Quảng Trị",
+        "districts": [
+            {
+                "name": "Thành phố Đông Hà",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Gio Linh",
+                "wards": [
+                    "Thị trấn Gio Linh",
+                    "Xã Gio An",
+                    "Xã Gio Bình"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Sóc Trăng",
+        "districts": [
+            {
+                "name": "Thành phố Sóc Trăng",
+                "wards": [
+                    "Phường 2",
+                    "Phường 3",
+                    "Phường 4"
+                ]
+            },
+            {
+                "name": "Huyện Mỹ Xuyên",
+                "wards": [
+                    "Thị trấn Mỹ Xuyên",
+                    "Xã Tham Đôn",
+                    "Xã Viên An"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Sơn La",
+        "districts": [
+            {
+                "name": "Thành phố Sơn La",
+                "wards": [
+                    "Phường Chiềng Lề",
+                    "Phường Chiềng An",
+                    "Phường Quyết Tâm"
+                ]
+            },
+            {
+                "name": "Huyện Mai Sơn",
+                "wards": [
+                    "Thị trấn Hát Lót",
+                    "Xã Chiềng Ban",
+                    "Xã Chiềng Chung"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Tây Ninh",
+        "districts": [
+            {
+                "name": "Thị xã Tây Ninh",
+                "wards": [
+                    "Phường Ninh Thạnh",
+                    "Phường 1",
+                    "Phường 2"
+                ]
+            },
+            {
+                "name": "Huyện Dương Minh Châu",
+                "wards": [
+                    "Thị trấn Dương Minh Châu",
+                    "Xã Truông Mít",
+                    "Xã Bến Củi"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Thái Bình",
+        "districts": [
+            {
+                "name": "Thành phố Thái Bình",
+                "wards": [
+                    "Phường Kỳ Bá",
+                    "Phường Tiền Phong",
+                    "Phường Trần Hưng Đạo"
+                ]
+            },
+            {
+                "name": "Huyện Hưng Hà",
+                "wards": [
+                    "Thị trấn Hưng Hà",
+                    "Xã Tây Đô",
+                    "Xã Hồng Lĩnh"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Thái Nguyên",
+        "districts": [
+            {
+                "name": "Thành phố Thái Nguyên",
+                "wards": [
+                    "Phường Tân Thịnh",
+                    "Phường Hoàng Văn Thụ",
+                    "Phường Định Hóa"
+                ]
+            },
+            {
+                "name": "Huyện Phổ Yên",
+                "wards": [
+                    "Thị trấn Phổ Yên",
+                    "Xã Phúc Thuận",
+                    "Xã Minh Đức"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Thanh Hóa",
+        "districts": [
+            {
+                "name": "Thành phố Thanh Hóa",
+                "wards": [
+                    "Phường Nam Ngạn",
+                    "Phường Lam Sơn",
+                    "Phường Trường Thi"
+                ]
+            },
+            {
+                "name": "Huyện Quảng Xương",
+                "wards": [
+                    "Thị trấn Tân Phong",
+                    "Xã Quảng Phong",
+                    "Xã Quảng Thạch"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Thừa Thiên Huế",
+        "districts": [
+            {
+                "name": "Thành phố Huế",
+                "wards": [
+                    "Phường Phú Hòa",
+                    "Phường Phú Nhuận",
+                    "Phường Phú Cát"
+                ]
+            },
+            {
+                "name": "Huyện Phú Vang",
+                "wards": [
+                    "Thị trấn Thuận An",
+                    "Xã Phú Thuận",
+                    "Xã Phú Thượng"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Tiền Giang",
+        "districts": [
+            {
+                "name": "Thành phố Mỹ Tho",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Châu Thành",
+                "wards": [
+                    "Thị trấn Chợ Gạo",
+                    "Xã Phú Kiết",
+                    "Xã Long Phú"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Trà Vinh",
+        "districts": [
+            {
+                "name": "Thành phố Trà Vinh",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Càng Long",
+                "wards": [
+                    "Thị trấn Càng Long",
+                    "Xã An Trường",
+                    "Xã Mỹ Cẩm"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Tuyên Quang",
+        "districts": [
+            {
+                "name": "Thành phố Tuyên Quang",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Sơn Dương",
+                "wards": [
+                    "Thị trấn Sơn Dương",
+                    "Xã Suối Poh",
+                    "Xã Bình Yên"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Vĩnh Long",
+        "districts": [
+            {
+                "name": "Thành phố Vĩnh Long",
+                "wards": [
+                    "Phường 1",
+                    "Phường 2",
+                    "Phường 3"
+                ]
+            },
+            {
+                "name": "Huyện Long Hồ",
+                "wards": [
+                    "Thị trấn Long Hồ",
+                    "Xã Bình Hòa Phước",
+                    "Xã Thanh Đức"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Vĩnh Phúc",
+        "districts": [
+            {
+                "name": "Thành phố Vĩnh Yên",
+                "wards": [
+                    "Phường Liên Bảo",
+                    "Phường Khai Quang",
+                    "Phường Hội Hợp"
+                ]
+            },
+            {
+                "name": "Huyện Tam Dương",
+                "wards": [
+                    "Thị trấn Hợp Hòa",
+                    "Xã Đạo Trù",
+                    "Xã Hoàng Việt"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Yên Bái",
+        "districts": [
+            {
+                "name": "Thành phố Yên Bái",
+                "wards": [
+                    "Phường Nguyễn Thái Học",
+                    "Phường Đồng Tâm",
+                    "Phường Nguyễn Văn Trỗi"
+                ]
+            },
+            {
+                "name": "Huyện Trấn Yên",
+                "wards": [
+                    "Thị trấn Cổ Phúc",
+                    "Xã Minh An",
+                    "Xã Báo Đáp"
+                ]
+            }
+        ]
+    }
+]
