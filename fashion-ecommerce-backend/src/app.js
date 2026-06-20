@@ -9,8 +9,12 @@ const connectDB = require("./config/db");
 const app = express();
 
 const uploadDir = path.join(__dirname, "..", "uploads");
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+try {
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+} catch (error) {
+    console.log("Skipping upload folder creation on serverless environment.");
 }
 app.use("/uploads", express.static(uploadDir));
 
