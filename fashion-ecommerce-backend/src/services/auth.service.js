@@ -5,7 +5,7 @@ const { sendVerifyEmail, sendResetPasswordEmail } = require("../../email");
 
 // ─── REGISTER ────────────────────────────────────────────────────────────────
 const register = async (data) => {
-    const { name, email, password } = data;
+    const { name, email, password, phone } = data;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error("Email already exists");

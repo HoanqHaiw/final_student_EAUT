@@ -6,6 +6,7 @@ export default function Register() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
         password: '',
         confirmPassword: '',
     });
@@ -36,6 +37,7 @@ export default function Register() {
             await authAPI.register({
                 name: formData.name,
                 email: formData.email,
+                phone: formData.phone,
                 password: formData.password,
             });
             setSuccess('Đăng ký thành công! Vui lòng kiểm tra email để nhận mã xác nhận.');
@@ -75,6 +77,18 @@ export default function Register() {
                             type="email"
                             name="email"
                             value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border border-gray-300 rounded"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold mb-2">Phone</label>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
                             onChange={handleChange}
                             className="w-full px-4 py-2 border border-gray-300 rounded"
                             required
