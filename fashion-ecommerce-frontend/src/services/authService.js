@@ -9,6 +9,11 @@ export const authAPI = {
     resetPassword: (data) => api.post('/auth/reset-password', data),
 };
 
+// Contact APIs
+export const contactAPI = {
+    send: (data) => api.post('/contact', data),
+};
+
 // Product APIs
 export const productAPI = {
     getAll: (params) => api.get('/products', { params }),

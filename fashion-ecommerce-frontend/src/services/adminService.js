@@ -41,4 +41,7 @@ export const adminService = {
     createEvent: (data) => adminApi.post('/admin/events', data),
     updateEvent: (id, data) => adminApi.put(`/admin/events/${id}`, data),
     deleteEvent: (id) => adminApi.delete(`/admin/events/${id}`),
+    getContacts: () => adminApi.get('/admin/contact'),
+    updateContactStatus: (id, status) => adminApi.put(`/admin/contact/${id}/status`, { status }),
+    deleteContact: (id) => adminApi.delete(`/admin/contact/${id}`),
 };

@@ -4,6 +4,27 @@ import api from '../services/api';
 
 const CHATBOT_STORAGE_KEY = 'chatbot_widget_messages';
 
+const userQuestionsPool = [
+    "Tìm áo thun nam",
+    "Chính sách đổi trả",
+    "Làm sao thanh toán?",
+    "Phí giao hàng bao nhiêu?",
+    "Áo khoác mùa đông",
+    "Kiểm tra tình trạng đơn hàng",
+    "Cách chọn size quần áo",
+    "Mệnh thủy hợp áo màu gì?",
+    "Mệnh hỏa nên mặc màu gì?",
+    "Có đồ thể thao không?",
+    "Giờ làm việc của shop?"
+];
+
+const getRandomQuestions = (pool, count, exclude = []) => {
+    const available = pool.filter(q => !exclude.includes(q));
+    const finalPool = available.length >= count ? available : pool.filter(q => q !== exclude[0]);
+    const shuffled = [...finalPool].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+};
+
 const initialBotMessage = {
     id: 1,
     text: "Xin chào! 👋 Tôi là trợ lý AI của cửa hàng thời trang. Tôi có thể giúp bạn với gì?",
@@ -48,7 +69,12 @@ export default function ChatbotWidget() {
     const [messages, setMessages] = useState([initialBotMessage]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
+    const [suggestedQuestions, setSuggestedQuestions] = useState([]);
     const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        setSuggestedQuestions(getRandomQuestions(userQuestionsPool, 3));
+    }, []);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -102,24 +128,26 @@ export default function ChatbotWidget() {
         fetchHistory();
     }, [isOpen, token]);
 
-    const handleSendMessage = async (e) => {
-        e.preventDefault();
-        if (!inputValue.trim()) return;
+    const handleSendMessage = async (e, directText = null) => {
+        if (e) e.preventDefault();
+        const textToSend = typeof directText === 'string' ? directText : inputValue;
+        if (!textToSend.trim()) return;
 
         const userMessage = {
             id: messages.length + 1,
-            text: inputValue,
+            text: textToSend,
             sender: 'user',
             timestamp: new Date(),
         };
 
         setMessages((prev) => [...prev, userMessage]);
-        setInputValue('');
+        if (typeof directText !== 'string') setInputValue('');
         setLoading(true);
+        setSuggestedQuestions(getRandomQuestions(userQuestionsPool, 3, [textToSend, ...suggestedQuestions]));
 
         try {
             const endpoint = token ? '/chatbot/send' : '/chatbot/ask';
-            const response = await api.post(endpoint, { message: inputValue });
+            const response = await api.post(endpoint, { message: textToSend });
 
             const responseData = response.data?.data?.botResponse || response.data?.reply;
             const botText = typeof responseData === 'string'
@@ -245,6 +273,18 @@ export default function ChatbotWidget() {
                     </div>
 
                     <div className="border-t border-black p-3 bg-white">
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                            {suggestedQuestions.map((q, i) => (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    onClick={() => handleSendMessage(null, q)}
+                                    className="bg-neutral-100 hover:bg-neutral-200 text-black text-[10px] px-2 py-1 border border-neutral-200 transition text-left"
+                                >
+                                    {q}
+                                </button>
+                            ))}
+                        </div>
                         <form onSubmit={handleSendMessage} className="flex gap-2">
                             <input
                                 type="text"

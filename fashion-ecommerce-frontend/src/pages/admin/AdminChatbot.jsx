@@ -1,6 +1,36 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { adminService } from '../../services/adminService';
+
+const adminQuestionsPool = [
+    'Sản phẩm nào bán chạy nhất?',
+    'Có mã giảm giá nào đang hoạt động?',
+    'Tóm tắt doanh thu hôm nay',
+    'Có bao nhiêu đơn hàng đang chờ xử lý?',
+    'Tổng số người dùng hiện tại là bao nhiêu?',
+    'Sản phẩm nào sắp hết hàng?',
+    'Báo cáo doanh thu tháng này',
+    'Lấy đơn hàng mới nhất cần xử lý',
+    'Liệt kê danh mục sản phẩm',
+    'Tìm đơn hàng gần nhất'
+];
+
+const staffQuestionsPool = [
+    'Có đơn hàng nào đang chờ xử lý không?',
+    'Sản phẩm nào sắp hết hàng?',
+    'Tìm đơn hàng mới nhất',
+    'Kiểm tra kho hàng áo thun',
+    'Lấy danh sách sản phẩm tồn kho thấp',
+    'Đơn hàng nào vừa được đặt?',
+    'Sản phẩm nào cần nhập thêm?'
+];
+
+const getRandomQuestions = (pool, count, exclude = []) => {
+    const available = pool.filter(q => !exclude.includes(q));
+    const finalPool = available.length >= count ? available : pool.filter(q => q !== exclude[0]);
+    const shuffled = [...finalPool].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+};
 
 export default function AdminChatbot() {
     const { user } = useSelector((state) => state.adminAuth);
@@ -19,25 +49,40 @@ export default function AdminChatbot() {
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [suggestedQuestions, setSuggestedQuestions] = useState([]);
+    const messagesEndRef = useRef(null);
 
-    const handleSend = async (e) => {
-        e.preventDefault();
-        if (!inputValue.trim()) return;
+    useEffect(() => {
+        const pool = user?.role === 'staff' ? staffQuestionsPool : adminQuestionsPool;
+        setSuggestedQuestions(getRandomQuestions(pool, 3));
+    }, [user?.role]);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    const handleSend = async (e, directText = null) => {
+        if (e) e.preventDefault();
+        const textToSend = typeof directText === 'string' ? directText : inputValue;
+        if (!textToSend.trim()) return;
 
         const userMessage = {
             id: messages.length + 1,
             sender: 'user',
-            text: inputValue,
+            text: textToSend,
             timestamp: new Date()
         };
 
         setMessages((prev) => [...prev, userMessage]);
-        setInputValue('');
+        if (typeof directText !== 'string') setInputValue('');
         setLoading(true);
         setError('');
 
+        const pool = user?.role === 'staff' ? staffQuestionsPool : adminQuestionsPool;
+        setSuggestedQuestions(getRandomQuestions(pool, 3, [textToSend, ...suggestedQuestions]));
+
         try {
-            const response = await adminService.askChatbot(inputValue);
+            const response = await adminService.askChatbot(textToSend);
             const replyData = response.data.reply;
             const botText = typeof replyData === 'string'
                 ? replyData
@@ -71,7 +116,7 @@ export default function AdminChatbot() {
                     : 'Hỏi trợ lý về đơn hàng, sản phẩm, coupon, danh mục, người dùng hoặc báo cáo.'}
             </p>
 
-            <div className="space-y-4 mb-6">
+            <div className="space-y-4 mb-6 max-h-[60vh] overflow-y-auto pr-2">
                 {messages.map((msg) => (
                     <div key={msg.id} className={`rounded-xl p-4 ${msg.sender === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-100 text-gray-900'} ${msg.sender === 'user' ? 'ml-auto' : 'mr-auto'} max-w-xl`}>
                         <p className="whitespace-pre-wrap">{msg.text}</p>
@@ -95,9 +140,23 @@ export default function AdminChatbot() {
                         </p>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
 
             {error && <p className="text-red-600 mb-4">{error}</p>}
+
+            <div className="flex flex-wrap gap-2 mb-4">
+                {suggestedQuestions.map((q, idx) => (
+                    <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSend(null, q)}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm py-1.5 px-3 rounded-full transition"
+                    >
+                        {q}
+                    </button>
+                ))}
+            </div>
 
             <form onSubmit={handleSend} className="flex gap-3">
                 <input

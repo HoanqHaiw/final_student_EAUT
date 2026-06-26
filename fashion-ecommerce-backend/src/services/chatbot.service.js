@@ -70,6 +70,30 @@ const getOrderStatus = async ({ orderId }) => {
     }
 };
 
+const getPendingOrders = async ({ limit = 5 }) => {
+    try {
+        const orders = await Order.find({ status: 'pending' })
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .populate('user', 'name email');
+        
+        if (!orders.length) return { success: true, message: "Không có đơn hàng nào đang chờ xử lý." };
+        
+        return {
+            success: true,
+            orders: orders.map(o => ({
+                orderId: o._id,
+                customerName: o.user?.name || o.shippingAddress?.fullName || 'Khách',
+                totalPrice: o.finalPrice || o.totalPrice,
+                paymentMethod: o.paymentMethod,
+                createdAt: o.createdAt
+            }))
+        };
+    } catch(err) {
+        return { success: false, error: err.message };
+    }
+};
+
 const getInventory = async ({ threshold = 5 }) => {
     try {
         const products = await Product.find({
@@ -180,6 +204,19 @@ const toolsConfig = {
                     }
                 }
             }
+        },
+        {
+            type: "function",
+            function: {
+                name: "getPendingOrders",
+                description: "Lấy danh sách các đơn hàng mới nhất đang chờ xử lý (chưa xác nhận) để xử lý.",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        limit: { type: "number", description: "Số lượng đơn hàng cần lấy (mặc định 5)" }
+                    }
+                }
+            }
         }
     ],
     admin: [
@@ -256,6 +293,7 @@ const generateBotResponse = async (userMessage, role = 'customer', sessionMessag
             let functionResult = {};
             if (functionName === "searchProducts") functionResult = await searchProducts(functionArgs);
             else if (functionName === "getOrderStatus") functionResult = await getOrderStatus(functionArgs);
+            else if (functionName === "getPendingOrders") functionResult = await getPendingOrders(functionArgs);
             else if (functionName === "getInventory") functionResult = await getInventory(functionArgs);
             else if (functionName === "getCoupons") functionResult = await getCoupons();
             else if (functionName === "getSystemStats") functionResult = await getSystemStats();

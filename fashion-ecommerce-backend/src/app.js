@@ -48,6 +48,7 @@ app.use("/api/products", require("./routes/product.routes"));
 app.use("/api/categories", require("./routes/category.routes"));
 app.use("/api/events", require("./routes/event.routes"));
 app.use("/api/reviews", require("./routes/review.routes"));
+app.use("/api/contact", require("./routes/contact.routes"));
 
 // ─── USER ROUTES (includes admin user management) ────────────────────────
 app.use("/api/users", require("./routes/user.routes"));

@@ -42,6 +42,7 @@ const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
 const AdminInventory = lazy(() => import('./pages/admin/AdminInventory'));
 const AdminEvents = lazy(() => import('./pages/admin/AdminEvents'));
 const AdminChatbot = lazy(() => import('./pages/admin/AdminChatbot'));
+const AdminFeedback = lazy(() => import('./pages/admin/AdminFeedback'));
 
 function AdminLanding() {
   const { user } = useSelector((state) => state.adminAuth);
@@ -218,6 +219,14 @@ function AppContent() {
                 element={
                     <ProtectedRoute requiredRole="staff">
                     <AdminChatbot />
+                    </ProtectedRoute>
+                }
+                />
+                <Route
+                path="feedback"
+                element={
+                    <ProtectedRoute requiredRole="admin">
+                    <AdminFeedback />
                     </ProtectedRoute>
                 }
                 />
