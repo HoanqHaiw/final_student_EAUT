@@ -25,10 +25,14 @@ const register = async (data) => {
         verifyTokenExpires
     });
 
-    // gửi email bất đồng bộ (không await, không block response)
-    sendVerifyEmail(email, verifyToken).catch(err => {
-        console.error(`Failed to send verification email to ${email}:`, err.message);
-    });
+    // Gửi email và chờ kết quả. Nếu lỗi sẽ báo thẳng ra màn hình Frontend
+    try {
+        await sendVerifyEmail(email, verifyToken);
+    } catch (err) {
+        // Xóa user vừa tạo nếu gửi mail thất bại để họ có thể đăng ký lại
+        await User.findByIdAndDelete(user._id);
+        throw new Error("Lỗi gửi email xác nhận. Vui lòng kiểm tra lại cấu hình Email: " + err.message);
+    }
 
     return user;
 };
