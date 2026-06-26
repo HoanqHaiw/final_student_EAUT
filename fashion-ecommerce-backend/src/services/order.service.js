@@ -152,12 +152,15 @@ const createOrder = async (userId, data) => {
         }
     }
 
-    // 6. clear cart if backend cart was used
-    if (!useCartItemsFromRequest) {
+    // 6. clear cart if backend cart was used AND payment is not stripe
+    // (Stripe orders will clear cart in the webhook upon success)
+    if (!useCartItemsFromRequest && paymentMethod !== 'stripe') {
         const cart = await Cart.findOne({ user: userId });
-        cart.items = [];
-        cart.totalPrice = 0;
-        await cart.save();
+        if (cart) {
+            cart.items = [];
+            cart.totalPrice = 0;
+            await cart.save();
+        }
     }
 
     return order;

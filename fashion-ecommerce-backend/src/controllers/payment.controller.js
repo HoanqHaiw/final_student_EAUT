@@ -68,10 +68,19 @@ const webhook = async (req, res) => {
                 await orderService.updatePaymentStatus(orderId, "paid");
                 const paidOrder = await orderService.getOrderDetail(orderId);
 
+                // Xóa giỏ hàng database khi thanh toán thành công
+                const Cart = require("../models/cart.model");
+                const cart = await Cart.findOne({ user: paidOrder.user._id });
+                if (cart) {
+                    cart.items = [];
+                    cart.totalPrice = 0;
+                    await cart.save();
+                }
+
                 sendOrderConfirmationEmail(paidOrder.user.email, paidOrder).catch((err) => {
                     console.error(`Failed to send payment confirmation email for order ${orderId}:`, err.message);
                 });
-                console.log(`Order ${orderId} payment marked as paid and email sent`);
+                console.log(`Order ${orderId} payment marked as paid, cart cleared, and email sent`);
             } catch (dbError) {
                 console.error(`Webhook error updating order ${orderId}:`, dbError.message);
                 // Still return 200 to prevent Stripe retry

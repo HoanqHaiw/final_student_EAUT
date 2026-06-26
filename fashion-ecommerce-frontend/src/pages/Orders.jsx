@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../redux/slices/cartSlice';
 import { orderAPI } from '../services/authService';
 
 export default function Orders() {
+    const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [refreshToggle, setRefreshToggle] = useState(false);
+
+    useEffect(() => {
+        if (searchParams.get('payment_success') === 'true') {
+            dispatch(clearCart());
+            setSearchParams({});
+        }
+    }, [searchParams, dispatch, setSearchParams]);
 
     useEffect(() => {
         const loadOrders = async () => {

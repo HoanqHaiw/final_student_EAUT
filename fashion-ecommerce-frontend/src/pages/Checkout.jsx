@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMemo, useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../redux/slices/cartSlice';
 import { logout } from '../redux/slices/authSlice';
@@ -9,6 +9,7 @@ import locations from '../data/vietnam-locations.json';
 export default function Checkout() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { items } = useSelector((state) => state.cart);
     const { user } = useSelector((state) => state.auth);
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -28,6 +29,18 @@ export default function Checkout() {
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        const cancelStripe = searchParams.get('cancel_stripe');
+        const orderId = searchParams.get('order_id');
+        
+        if (cancelStripe === 'true' && orderId) {
+            setError('Bạn đã hủy thanh toán Stripe. Đơn hàng chưa được ghi nhận và sản phẩm đã được hoàn lại vào giỏ hàng.');
+            orderAPI.cancel(orderId).catch(console.error).finally(() => {
+                setSearchParams({});
+            });
+        }
+    }, [searchParams, setSearchParams]);
 
     const shippingFee = useMemo(() => {
         if (totalPrice >= 1000000) return 0;
@@ -123,13 +136,15 @@ export default function Checkout() {
             });
 
             const newOrder = response.data.data;
-            dispatch(clearCart());
 
             if (paymentMethod === 'stripe') {
                 const paymentResponse = await paymentAPI.checkout(newOrder._id);
                 window.location.href = paymentResponse.data.data.url;
                 return;
             }
+
+            // Chỉ xóa giỏ hàng nếu không dùng Stripe (COD/Bank transfer)
+            dispatch(clearCart());
 
             if (paymentMethod === 'bank_transfer') {
                 setBankTransferOrder(newOrder);

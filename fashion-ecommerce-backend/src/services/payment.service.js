@@ -19,8 +19,8 @@ const createCheckoutSession = async (order) => {
 
         mode: "payment",
 
-        success_url: `${process.env.CLIENT_URL}/orders`,
-        cancel_url: `${process.env.CLIENT_URL}/checkout`,
+        success_url: `${process.env.CLIENT_URL}/orders?payment_success=true`,
+        cancel_url: `${process.env.CLIENT_URL}/checkout?cancel_stripe=true&order_id=${order._id.toString()}`,
 
         metadata: {
             orderId: order._id.toString()
