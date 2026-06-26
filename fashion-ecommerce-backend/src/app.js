@@ -29,7 +29,17 @@ const allowedOrigins = [
     'http://localhost:5174',
     'http://localhost:5175'
 ];
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({ 
+    origin: function (origin, callback) {
+        // Cho phép các origin trong mảng, hoặc các origin từ vercel (preview links), hoặc không có origin (như postman)
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }, 
+    credentials: true 
+}));
 app.use(morgan("dev"));
 
 // stripe webhook cần raw body → đặt TRƯỚC express.json()
