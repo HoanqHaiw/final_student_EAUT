@@ -40,7 +40,8 @@ const searchProducts = async ({ keyword, minPrice, maxPrice, category, size, col
                 name: p.name,
                 category: p.category?.name || 'Chung',
                 price: Math.min(...p.variants.map(v => v.price)),
-                url: `${CLIENT_URL}/product/${p._id}`
+                url: `${CLIENT_URL}/product/${p._id}`,
+                markdown_link: `[${p.name}](${CLIENT_URL}/product/${p._id})`
             }))
         };
     } catch(err) {
@@ -67,6 +68,31 @@ const getOrderStatus = async ({ orderId }) => {
         };
     } catch(err) {
         return { success: false, message: "Lỗi khi tìm đơn hàng." };
+    }
+};
+
+const getMyRecentOrder = async ({ userId }) => {
+    if (!userId) return { success: false, message: "Bạn đang là khách vãn lai (chưa đăng nhập). Vui lòng đăng nhập để xem thông tin đơn hàng tự động, hoặc sử dụng tính năng tra cứu bằng Mã Đơn Hàng nếu bạn đã đặt hàng không cần tài khoản." };
+    
+    try {
+        const order = await Order.findOne({ user: userId }).sort({ createdAt: -1 });
+        if (!order) return { success: true, message: "Bạn chưa có đơn hàng nào trong hệ thống." };
+        return {
+            success: true,
+            orderId: order._id,
+            status: order.status,
+            totalPrice: order.finalPrice || order.totalPrice,
+            shippingAddress: order.shippingAddress,
+            paymentMethod: order.paymentMethod,
+            items: order.items.map(item => ({
+                name: item.product?.name || item.name,
+                quantity: item.quantity,
+                price: item.price
+            })),
+            createdAt: order.createdAt
+        };
+    } catch(err) {
+        return { success: false, message: "Lỗi khi lấy thông tin đơn hàng cá nhân." };
     }
 };
 
@@ -163,7 +189,7 @@ const toolsConfig = {
             type: "function",
             function: {
                 name: "searchProducts",
-                description: "Tìm kiếm sản phẩm trong database theo các tiêu chí (tên, giá, màu sắc, kích thước). Khi người dùng hỏi về quần áo hợp mệnh, hãy tự suy luận màu sắc và truyền vào color. Ví dụ mệnh hỏa -> color: 'đỏ'.",
+                description: "Tìm kiếm sản phẩm trong database. BẮT BUỘC sử dụng chính xác chuỗi `markdown_link` trả về để hiển thị sản phẩm, KHÔNG THÊM BẤT KỲ KÝ TỰ NÀO VÀO URL HAY DẤU NGOẶC.",
                 parameters: {
                     type: "object",
                     properties: {
@@ -188,6 +214,14 @@ const toolsConfig = {
                     },
                     required: ["orderId"]
                 }
+            }
+        },
+        {
+            type: "function",
+            function: {
+                name: "getMyRecentOrder",
+                description: "Lấy thông tin đơn hàng mới nhất của người dùng hiện tại (nếu họ đã đăng nhập). KHÔNG yêu cầu mã đơn hàng.",
+                parameters: { type: "object", properties: {} }
             }
         }
     ],
@@ -241,7 +275,7 @@ const toolsConfig = {
 
 // --- CHATBOT CORE ---
 
-const generateBotResponse = async (userMessage, role = 'customer', sessionMessages = []) => {
+const generateBotResponse = async (userMessage, role = 'customer', sessionMessages = [], userId = null) => {
     if (!process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY) {
         return { text: "Xin lỗi, API Key chưa được cấu hình." };
     }
@@ -256,10 +290,10 @@ const generateBotResponse = async (userMessage, role = 'customer', sessionMessag
         }
 
         const systemPrompt = role === 'admin'
-            ? 'Bạn là AI trợ lý quản trị viên. Hãy dùng tools để lấy dữ liệu. Trả lời rõ ràng, chính xác. Nếu là thông tin sản phẩm, luôn đính kèm URL.'
+            ? 'Bạn là AI trợ lý cấp cao dành cho Quản trị viên (Admin). Bạn có quyền truy cập toàn bộ dữ liệu (doanh thu, đơn hàng, coupon, tồn kho). Hãy trình bày báo cáo một cách chuyên nghiệp, rõ ràng bằng bảng (table) hoặc gạch đầu dòng. Phân tích dữ liệu thông minh và đưa ra cảnh báo nếu thấy bất thường.'
             : role === 'staff'
-                ? 'Bạn là AI trợ lý nhân viên kho/đơn. Chỉ hỗ trợ đơn hàng và kho. Từ chối câu hỏi doanh thu. Trả lời ngắn gọn, chuyên nghiệp.'
-                : 'Bạn là AI trợ lý bán hàng thân thiện. Hãy phân tích yêu cầu (như cân nặng -> size, mệnh -> màu) và dùng tool searchProducts. Trả lời nhiệt tình, thân thiện, DÙNG ĐỊNH DẠNG MARKDOWN CHO LINK KHI GỢI Ý SẢN PHẨM: [Tên Sản phẩm](URL).';
+                ? 'Bạn là AI trợ lý Nhân viên (Staff). Nhiệm vụ của bạn là hỗ trợ quản lý kho và xử lý đơn hàng nhanh chóng, chính xác. Luôn trả lời ngắn gọn, chuyên nghiệp và đúng trọng tâm.'
+                : 'Bạn là AI trợ lý Bán hàng thân thiện. Nhiệm vụ: tư vấn sản phẩm, size (từ cân nặng), màu sắc (từ phong thủy/mệnh) và kiểm tra đơn hàng. Nếu khách hỏi "đơn hàng gần nhất", hãy gọi hàm getMyRecentOrder. Đối với khách vãn lai, khéo léo nhắc họ đăng nhập. QUAN TRỌNG: Khi gợi ý sản phẩm, BẮT BUỘC in nguyên văn chuỗi `markdown_link` do tool trả về (ví dụ: [Áo thun](url)). TUYỆT ĐỐI KHÔNG thêm dấu `)**`, `.`, hay bất kỳ ký tự rác nào liền kề sau dấu ngoặc đóng `)` của markdown link để tránh làm hỏng URL.';
 
         // Prepare messages for OpenAI
         const messages = [
@@ -293,6 +327,7 @@ const generateBotResponse = async (userMessage, role = 'customer', sessionMessag
             let functionResult = {};
             if (functionName === "searchProducts") functionResult = await searchProducts(functionArgs);
             else if (functionName === "getOrderStatus") functionResult = await getOrderStatus(functionArgs);
+            else if (functionName === "getMyRecentOrder") functionResult = await getMyRecentOrder({ userId });
             else if (functionName === "getPendingOrders") functionResult = await getPendingOrders(functionArgs);
             else if (functionName === "getInventory") functionResult = await getInventory(functionArgs);
             else if (functionName === "getCoupons") functionResult = await getCoupons();
@@ -335,7 +370,7 @@ const sendMessage = async (userId, userMessage) => {
     const session = await getOrCreateSession(userId);
     
     // We pass session messages for context
-    const botResponse = await generateBotResponse(userMessage, 'customer', session.messages);
+    const botResponse = await generateBotResponse(userMessage, 'customer', session.messages, userId);
     
     session.messages.push({ sender: "user", message: userMessage });
     session.messages.push({ sender: "bot", message: botResponse.text });
@@ -356,7 +391,7 @@ const clearChatHistory = async (userId) => {
 
 const askChatbot = async (userMessage) => {
     if (!userMessage || !userMessage.trim()) throw new Error("Message cannot be empty");
-    return generateBotResponse(userMessage, 'customer');
+    return generateBotResponse(userMessage, 'customer', [], null);
 };
 
 const askAdminChatbot = async (adminId, userMessage, role = 'admin') => {
@@ -364,7 +399,7 @@ const askAdminChatbot = async (adminId, userMessage, role = 'admin') => {
     
     // Admins might also have a session, but usually admin chatbot in this app doesn't save to DB.
     // For simplicity, we just respond statelessly as before.
-    return generateBotResponse(userMessage, role);
+    return generateBotResponse(userMessage, role, [], adminId);
 };
 
 module.exports = {
