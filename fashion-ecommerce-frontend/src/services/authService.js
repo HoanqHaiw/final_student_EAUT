@@ -51,7 +51,8 @@ export const orderAPI = {
 
 // Payment APIs
 export const paymentAPI = {
-    checkout: (orderId) => api.post(`/payments/checkout/${orderId}`),
+    checkout: (orderId, data) => api.post(`/payments/checkout/${orderId}`, data),
+    verifySession: (sessionId) => api.post('/payments/verify-session', { sessionId }),
 };
 
 // Coupon APIs

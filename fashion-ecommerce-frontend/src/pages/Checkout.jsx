@@ -138,7 +138,9 @@ export default function Checkout() {
             const newOrder = response.data.data;
 
             if (paymentMethod === 'stripe') {
-                const paymentResponse = await paymentAPI.checkout(newOrder._id);
+                const paymentResponse = await paymentAPI.checkout(newOrder._id, {
+                    returnUrl: window.location.origin
+                });
                 window.location.href = paymentResponse.data.data.url;
                 return;
             }
@@ -151,7 +153,7 @@ export default function Checkout() {
                 return;
             }
 
-            navigate('/orders');
+            navigate('/?order_success=true');
         } catch (err) {
             setError(err.response?.data?.message || err.message || 'Đặt hàng thất bại.');
         } finally {

@@ -7,7 +7,8 @@ const createOrder = async (req, res) => {
         const order = await orderService.createOrder(req.user.id, req.body);
 
         if (order.paymentMethod !== 'stripe') {
-            sendOrderConfirmationEmail(req.user.email, order).catch((err) => {
+            const populatedOrder = await orderService.getOrderDetail(order._id);
+            sendOrderConfirmationEmail(req.user.email, populatedOrder).catch((err) => {
                 console.error(`Failed to send order confirmation email for order ${order._id}:`, err.message);
             });
         }

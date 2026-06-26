@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const checkout = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
+        const { returnUrl } = req.body;
 
         if (!order) {
             return res.status(404).json({
@@ -17,7 +18,7 @@ const checkout = async (req, res) => {
             });
         }
 
-        const session = await paymentService.createCheckoutSession(order);
+        const session = await paymentService.createCheckoutSession(order, returnUrl);
 
         res.json({
             success: true,
@@ -100,4 +101,43 @@ const webhook = async (req, res) => {
     }
 };
 
-module.exports = { checkout, webhook };
+// API verify session cho trường hợp webhook không chạy (VD: chạy local không ngrok)
+const verifySession = async (req, res) => {
+    try {
+        const { sessionId } = req.body;
+        if (!sessionId) return res.status(400).json({ success: false, message: "No session id" });
+
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        
+        if (session.payment_status === "paid") {
+            const orderId = session.metadata?.orderId;
+            if (!orderId) return res.json({ success: false, message: "No order id in session" });
+
+            const currentOrder = await Order.findById(orderId);
+            if (currentOrder && currentOrder.paymentStatus !== "paid") {
+                await orderService.updatePaymentStatus(orderId, "paid");
+                const paidOrder = await orderService.getOrderDetail(orderId);
+
+                // Xóa giỏ hàng database khi thanh toán thành công
+                const Cart = require("../models/cart.model");
+                const cart = await Cart.findOne({ user: paidOrder.user._id });
+                if (cart) {
+                    cart.items = [];
+                    cart.totalPrice = 0;
+                    await cart.save();
+                }
+
+                sendOrderConfirmationEmail(paidOrder.user.email, paidOrder).catch((err) => {
+                    console.error(`Failed to send payment confirmation email for order ${orderId}:`, err.message);
+                });
+            }
+            return res.json({ success: true, message: "Payment verified and updated" });
+        }
+        res.json({ success: false, message: "Payment not completed yet" });
+    } catch (err) {
+        console.error("Verify session error:", err.message);
+        res.status(400).json({ success: false, message: err.message });
+    }
+};
+
+module.exports = { checkout, webhook, verifySession };

@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { setLoading, setProducts, setError } from '../redux/slices/productSlice';
-import { productAPI, categoryAPI } from '../services/authService';
+import { clearCart } from '../redux/slices/cartSlice';
+import { productAPI, categoryAPI, paymentAPI } from '../services/authService';
 import ProductCard from '../components/ProductCard';
 
 export default function Home() {
     const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const { products, loading } = useSelector((state) => state.product);
     const [categories, setCategories] = useState([]);
     const [activeSlide, setActiveSlide] = useState(0);
@@ -73,6 +76,24 @@ export default function Home() {
         }, 6000);
         return () => clearInterval(timer);
     }, [slides.length]);
+
+    useEffect(() => {
+        const paymentSuccess = searchParams.get('payment_success');
+        const orderSuccess = searchParams.get('order_success');
+        const sessionId = searchParams.get('session_id');
+
+        if (paymentSuccess === 'true') {
+            dispatch(clearCart());
+            if (sessionId) {
+                paymentAPI.verifySession(sessionId).catch(console.error);
+            }
+            alert('Thanh toán thành công! Đơn hàng của bạn đang được xử lý và thông tin đã gửi về email.');
+            setSearchParams({});
+        } else if (orderSuccess === 'true') {
+            alert('Đặt hàng thành công! Thông tin đơn hàng đã được gửi về email của bạn.');
+            setSearchParams({});
+        }
+    }, [searchParams, dispatch, setSearchParams]);
 
     return (
         <div className="animate-fadeIn">
