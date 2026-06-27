@@ -31,6 +31,11 @@ export default function AdminDashboard() {
     const [recentOrders, setRecentOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showExportModal, setShowExportModal] = useState(false);
+    const currentYear = new Date().getFullYear();
+    const [exportMonth, setExportMonth] = useState(String(new Date().getMonth() + 1));
+    const [exportYear, setExportYear] = useState(String(currentYear));
+    const [exportMode, setExportMode] = useState('month'); // 'month' | 'year' | 'all'
 
     useEffect(() => {
         const loadData = async () => {
@@ -55,20 +60,25 @@ export default function AdminDashboard() {
     }, []);
 
     const handleExportRevenue = async () => {
+        setShowExportModal(false);
         setError('');
         try {
-            const response = await adminService.exportDashboardRevenue();
+            const params = {};
+            if (exportMode === 'month') { params.month = exportMonth; params.year = exportYear; }
+            else if (exportMode === 'year') { params.year = exportYear; }
+            const response = await adminService.exportDashboardRevenue(params);
             const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'revenue.xlsx';
+            const label = exportMode === 'month' ? `thang${exportMonth}-${exportYear}` : exportMode === 'year' ? `nam${exportYear}` : 'tat-ca';
+            link.download = `bao-cao-doanh-thu-${label}.xlsx`;
             document.body.appendChild(link);
             link.click();
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (err) {
-            setError(err.response?.data?.message || err.message || 'Không thể xuất doanh thu Excel');
+            setError(err.response?.data?.message || err.message || 'Không thể xuất dỏ liệu');
         }
     };
 
@@ -102,11 +112,11 @@ export default function AdminDashboard() {
                 </div>
                 <button
                     type="button"
-                    onClick={handleExportRevenue}
+                    onClick={() => setShowExportModal(true)}
                     className="flex items-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-gray-800 transition-all hover:shadow-lg hover:shadow-gray-200"
                 >
                     <TrendingUp className="w-4 h-4" />
-                    Xuất Báo Cáo
+                    Xuất Báo Cáo Excel
                 </button>
             </div>
 
@@ -120,6 +130,80 @@ export default function AdminDashboard() {
                 <div className="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100 mb-8 flex items-center gap-3">
                     <XCircle className="w-5 h-5" />
                     {error}
+                </div>
+            )}
+
+            {/* Modal chọn kỳ xuất báo cáo */}
+            {showExportModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+                        <h2 className="text-xl font-bold text-gray-900 mb-1">Xuất Báo Cáo Excel</h2>
+                        <p className="text-sm text-gray-500 mb-6">Chọn kỳ báo cáo muốn xuất. File sẽ bao gồm 3 sheet: Tổng quan, Danh sách đơn hàng, Chi tiết sản phẩm.</p>
+
+                        <div className="space-y-4 mb-6">
+                            {/* Radio mode */}
+                            <div className="flex gap-3">
+                                {[['month', 'Theo tháng'], ['year', 'Theo năm'], ['all', 'Tất cả']].map(([val, lbl]) => (
+                                    <label key={val} className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border-2 cursor-pointer text-sm font-semibold transition-all ${
+                                        exportMode === val ? 'border-black bg-black text-white' : 'border-gray-200 text-gray-600 hover:border-gray-400'
+                                    }`}>
+                                        <input type="radio" className="hidden" value={val} checked={exportMode === val} onChange={() => setExportMode(val)} />
+                                        {lbl}
+                                    </label>
+                                ))}
+                            </div>
+
+                            {/* Year selector */}
+                            {exportMode !== 'all' && (
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Năm</label>
+                                    <select
+                                        value={exportYear}
+                                        onChange={e => setExportYear(e.target.value)}
+                                        className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:border-black transition"
+                                    >
+                                        {Array.from({ length: 5 }, (_, i) => currentYear - i).map(y => (
+                                            <option key={y} value={y}>{y}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+
+                            {/* Month selector */}
+                            {exportMode === 'month' && (
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tháng</label>
+                                    <select
+                                        value={exportMonth}
+                                        onChange={e => setExportMonth(e.target.value)}
+                                        className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:border-black transition"
+                                    >
+                                        {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                                            <option key={m} value={m}>Tháng {String(m).padStart(2, '0')}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setShowExportModal(false)}
+                                className="flex-1 rounded-lg bg-gray-100 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-200 transition"
+                            >
+                                Hủy
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleExportRevenue}
+                                className="flex-1 rounded-lg bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-gray-800 transition flex items-center justify-center gap-2"
+                            >
+                                <TrendingUp className="w-4 h-4" />
+                                Tải Excel
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

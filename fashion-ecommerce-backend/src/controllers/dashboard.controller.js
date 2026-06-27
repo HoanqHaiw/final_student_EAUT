@@ -11,8 +11,13 @@ const topProducts = async (req, res) => {
 };
 
 const exportRevenue = async (req, res) => {
-    const workbook = await dashboardService.exportRevenueExcel();
-    res.setHeader("Content-Disposition", "attachment; filename=revenue.xlsx");
+    const { month, year } = req.query;
+    const workbook = await dashboardService.exportRevenueExcel({
+        month: month ? parseInt(month) : null,
+        year: year ? parseInt(year) : null
+    });
+    const label = month && year ? `thang${month}-${year}` : year ? `nam${year}` : 'tat-ca';
+    res.setHeader("Content-Disposition", `attachment; filename=bao-cao-doanh-thu-${label}.xlsx`);
     await workbook.xlsx.write(res);
     res.end();
 };

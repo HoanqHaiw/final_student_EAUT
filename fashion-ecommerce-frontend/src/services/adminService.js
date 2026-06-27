@@ -36,7 +36,7 @@ export const adminService = {
     },
     exportProducts: (params) => adminApi.get('/admin/products/export', { params, responseType: 'blob' }),
     exportOrders: (params) => adminApi.get('/admin/orders/export', { params, responseType: 'blob' }),
-    exportDashboardRevenue: () => adminApi.get('/admin/dashboard/export', { responseType: 'blob' }),
+    exportDashboardRevenue: (params) => adminApi.get('/admin/dashboard/export', { params, responseType: 'blob' }),
     getEvents: (params) => adminApi.get('/admin/events', { params }),
     getEventDetail: (id) => adminApi.get(`/admin/events/${id}`),
     createEvent: (data) => adminApi.post('/admin/events', data),
