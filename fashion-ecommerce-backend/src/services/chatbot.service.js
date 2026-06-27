@@ -349,9 +349,80 @@ const generateBotResponse = async (userMessage, role = 'customer', sessionMessag
 
         return { text: finalResponse.choices[0].message.content };
     } catch (error) {
-        console.error('OpenAI error:', error);
-        return { text: "Đã có lỗi xảy ra khi kết nối tới hệ thống AI. Vui lòng thử lại sau." };
+        console.error('AI error:', error?.status, error?.message);
+
+        // Detect quota / token exhausted errors
+        const isQuotaError = 
+            error?.status === 429 ||
+            error?.status === 402 ||
+            /quota|insufficient|rate.?limit|billing|token|exceeded|limit/i.test(error?.message || '') ||
+            /quota|insufficient|rate.?limit|billing|token|exceeded|limit/i.test(error?.error?.message || '');
+
+        if (isQuotaError) {
+            // Smart fallback: answer directly from DB without AI
+            return await smartFallbackResponse(userMessage, userId);
+        }
+
+        // Other errors (network, config, etc.)
+        return { text: "Xin lỗi, hệ thống đang gặp sự cố tạm thời. Vui lòng thử lại sau ít phút." };
     }
+};
+
+/**
+ * Fallback thông minh khi AI hết token/quota.
+ * Trả lời trực tiếp từ database mà không cần AI.
+ */
+const smartFallbackResponse = async (userMessage, userId) => {
+    const msg = userMessage.toLowerCase();
+
+    // 1. Hỏi về đơn hàng gần nhất
+    if (userId && /(đơn|order).*(gần|mới|cuối|nhất|vừa)|(gần|mới|cuối|nhất|vừa).*(đơn|order)/i.test(msg)) {
+        const order = await Order.findOne({ user: userId }).sort({ createdAt: -1 });
+        if (!order) return { text: "👋 Bạn chưa có đơn hàng nào trong hệ thống." };
+        const statusMap = { pending: 'Chờ xử lý 🕐', confirmed: 'Đã xác nhận ✅', shipping: 'Đang giao 🚚', delivered: 'Đã giao 📦', cancelled: 'Đã huỷ ❌' };
+        const items = (order.items || []).map(i => `  • ${i.name} x${i.quantity}`).join('\n');
+        return { text: `📦 **Đơn hàng gần nhất của bạn:**\n- Mã: \`${order._id.toString().slice(-8).toUpperCase()}\`\n- Trạng thái: **${statusMap[order.status] || order.status}**\n- Tổng tiền: **${(order.finalPrice || order.totalPrice || 0).toLocaleString('vi-VN')}₫**\n- Ngày đặt: ${new Date(order.createdAt).toLocaleDateString('vi-VN')}\n\nSản phẩm:\n${items}` };
+    }
+
+    // 2. Tìm kiếm sản phẩm
+    if (/(tìm|tìm kiếm|xem|có|mua|giới thiệu|gợi ý).*(áo|quần|kính|giày|phụ kiện|sản phẩm|hàng)/i.test(msg) ||
+        /(áo|quần|kính|giày|phụ kiện).*(có|bán|còn)/i.test(msg)) {
+        // Extract keyword
+        const keywords = ['áo', 'quần', 'kính', 'giày', 'mũ', 'túi', 'phụ kiện'];
+        const found = keywords.find(k => msg.includes(k));
+        const products = await Product.find({ 
+            isDeleted: false, 
+            ...(found ? { name: { $regex: found, $options: 'i' } } : {})
+        }).limit(5).populate('category', 'name');
+        if (products.length === 0) return { text: "🔍 Hiện tôi chưa tìm được sản phẩm phù hợp. Bạn có thể ghé trang **[Sản phẩm](/products)** để xem toàn bộ nhé!" };
+        const list = products.map(p => `  • [${p.name}](${CLIENT_URL}/product/${p._id}) — từ ${Math.min(...p.variants.map(v => v.price)).toLocaleString('vi-VN')}₫`).join('\n');
+        return { text: `🛍️ Tôi tìm được một số sản phẩm có thể bạn quan tâm:\n\n${list}\n\n👉 Xem thêm tại [trang sản phẩm](/products)` };
+    }
+
+    // 3. Hỏi về trạng thái đơn theo mã
+    const orderIdMatch = msg.match(/[0-9a-f]{8,24}/i);
+    if (orderIdMatch && /(đơn|order|trạng thái|kiểm tra)/i.test(msg)) {
+        try {
+            const order = await Order.findById(orderIdMatch[0]);
+            if (order) {
+                const statusMap = { pending: 'Chờ xử lý', confirmed: 'Đã xác nhận', shipping: 'Đang giao', delivered: 'Đã giao', cancelled: 'Đã huỷ' };
+                return { text: `📋 Đơn hàng \`${orderIdMatch[0].slice(-8).toUpperCase()}\`:\n- Trạng thái: **${statusMap[order.status] || order.status}**\n- Tổng tiền: **${(order.finalPrice || order.totalPrice || 0).toLocaleString('vi-VN')}₫**` };
+            }
+        } catch (e) { /* ignore */ }
+    }
+
+    // 4. Hỏi về khuyến mãi / coupon
+    if (/(coupon|mã giảm|khuyến mãi|giảm giá|ưu đãi)/i.test(msg)) {
+        const coupons = await Coupon.find({ isActive: true }).limit(3);
+        if (coupons.length === 0) return { text: "😔 Hiện tại chưa có mã giảm giá nào đang hoạt động." };
+        const list = coupons.map(c => `  • **${c.code}** — giảm ${c.discountType === 'percent' ? c.discountValue + '%' : c.discountValue.toLocaleString('vi-VN') + '₫'}`).join('\n');
+        return { text: `🎁 Các mã giảm giá đang hoạt động:\n\n${list}` };
+    }
+
+    // 5. Default fallback
+    return { 
+        text: "🤖 Trợ lý AI đang tạm thời không khả dụng do giới hạn sử dụng hôm nay.\n\nTôi vẫn có thể giúp bạn:\n- 🔍 **Tìm sản phẩm**: Nhắn \"tìm áo\", \"có kính không?\"...\n- 📦 **Xem đơn hàng**: Nhắn \"đơn hàng gần nhất\" (cần đăng nhập)\n- 🎁 **Xem mã giảm giá**: Nhắn \"có mã giảm không?\"\n\nHoặc bạn có thể ghé [trang sản phẩm](/products) để mua sắm nhé! 😊"
+    };
 };
 
 // --- SESSION MANAGEMENT ---
