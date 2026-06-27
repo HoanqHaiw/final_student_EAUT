@@ -12,13 +12,17 @@ import {
     XCircle, 
     ArrowRight
 } from 'lucide-react';
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    PieChart, Pie, Cell, Legend, LabelList
+} from 'recharts';
 
 const STATUS_CONFIG = {
-    pending: { label: 'Chờ xử lý', color: 'bg-yellow-500', text: 'text-yellow-700', bg: 'bg-yellow-100', icon: Clock },
-    confirmed: { label: 'Đã xác nhận', color: 'bg-blue-500', text: 'text-blue-700', bg: 'bg-blue-100', icon: CheckCircle },
-    shipping: { label: 'Đang giao', color: 'bg-purple-500', text: 'text-purple-700', bg: 'bg-purple-100', icon: Truck },
-    delivered: { label: 'Đã giao', color: 'bg-green-500', text: 'text-green-700', bg: 'bg-green-100', icon: Package },
-    cancelled: { label: 'Đã huỷ', color: 'bg-red-500', text: 'text-red-700', bg: 'bg-red-100', icon: XCircle }
+    pending: { label: 'Chờ xử lý', color: 'bg-yellow-500', hexColor: '#eab308', text: 'text-yellow-700', bg: 'bg-yellow-100', icon: Clock },
+    confirmed: { label: 'Đã xác nhận', color: 'bg-blue-500', hexColor: '#3b82f6', text: 'text-blue-700', bg: 'bg-blue-100', icon: CheckCircle },
+    shipping: { label: 'Đang giao', color: 'bg-purple-500', hexColor: '#a855f7', text: 'text-purple-700', bg: 'bg-purple-100', icon: Truck },
+    delivered: { label: 'Đã giao', color: 'bg-green-500', hexColor: '#22c55e', text: 'text-green-700', bg: 'bg-green-100', icon: Package },
+    cancelled: { label: 'Đã huỷ', color: 'bg-red-500', hexColor: '#ef4444', text: 'text-red-700', bg: 'bg-red-100', icon: XCircle }
 };
 
 export default function AdminDashboard() {
@@ -76,6 +80,15 @@ export default function AdminDashboard() {
     const statusEntries = useMemo(() => {
         if (!overview?.statusCount) return [];
         return Object.entries(overview.statusCount);
+    }, [overview]);
+
+    const statusData = useMemo(() => {
+        if (!overview?.statusCount) return [];
+        return Object.entries(overview.statusCount).map(([status, count]) => ({
+            name: STATUS_CONFIG[status]?.label || status,
+            value: count,
+            color: STATUS_CONFIG[status]?.hexColor || '#cbd5e1'
+        })).filter(item => item.value > 0);
     }, [overview]);
 
     return (
@@ -159,68 +172,85 @@ export default function AdminDashboard() {
 
                     <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
                         {/* Biểu đồ doanh thu 6 tháng */}
-                        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-8">
                                 <div>
                                     <h2 className="text-lg font-bold text-gray-900">Doanh Thu 6 Tháng Gần Nhất</h2>
                                     <p className="text-sm text-gray-500">Biến động doanh thu từ các đơn hàng thành công.</p>
                                 </div>
                             </div>
-                            <div className="flex items-end gap-4 h-64 mt-4">
-                                {overview.revenueTrend.map((item, index) => (
-                                    <div key={item.label} className="flex-1 flex flex-col justify-end group">
-                                        <div className="text-center text-[10px] sm:text-xs font-semibold text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity mb-2 -translate-y-2">
-                                            {item.revenue.toLocaleString('vi-VN')}
-                                        </div>
-                                        <div
-                                            className="mx-auto w-full max-w-[40px] rounded-t-lg bg-gradient-to-t from-gray-200 to-black transition-all duration-1000 ease-out hover:from-gray-300 hover:to-gray-800 relative"
-                                            style={{ 
-                                                height: `${Math.max((item.revenue / maxRevenue) * 100, 5)}%`,
-                                                animation: `growUp 1s ease-out ${index * 0.1}s forwards`,
-                                                transformOrigin: 'bottom'
-                                            }}
+                            <div className="flex-1 w-full min-h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={overview.revenueTrend} margin={{ top: 30, right: 10, left: 0, bottom: 5 }}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                                        <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{fill: '#6b7280', fontSize: 12}} dy={10} />
+                                        <YAxis 
+                                            axisLine={false} 
+                                            tickLine={false} 
+                                            tick={{fill: '#6b7280', fontSize: 12}}
+                                            tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+                                            width={50}
                                         />
-                                        <div className="mt-4 text-center text-[10px] sm:text-xs font-medium text-gray-500">{item.label}</div>
-                                    </div>
-                                ))}
+                                        <Tooltip 
+                                            cursor={{fill: '#f3f4f6'}}
+                                            formatter={(value) => [`${value.toLocaleString('vi-VN')} ₫`, 'Doanh thu']}
+                                            labelStyle={{color: '#111827', fontWeight: 'bold'}}
+                                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                        />
+                                        <Bar dataKey="revenue" fill="#111827" radius={[6, 6, 0, 0]} maxBarSize={50}>
+                                            <LabelList 
+                                                dataKey="revenue" 
+                                                position="top" 
+                                                formatter={(value) => value >= 1000000 ? `${(value / 1000000).toFixed(1)}M` : value.toLocaleString('vi-VN')} 
+                                                style={{ fill: '#4b5563', fontSize: 11, fontWeight: 'bold' }} 
+                                            />
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
-                            <style>{`
-                                @keyframes growUp {
-                                    from { transform: scaleY(0); }
-                                    to { transform: scaleY(1); }
-                                }
-                            `}</style>
                         </div>
 
                         {/* Phân bố trạng thái đơn hàng */}
                         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
                             <div>
                                 <h2 className="text-lg font-bold text-gray-900 mb-1">Trạng Thái Đơn Hàng</h2>
-                                <p className="text-sm text-gray-500 mb-6">Tỉ lệ đơn hàng hiện tại.</p>
+                                <p className="text-sm text-gray-500">Tỉ lệ phân bổ các trạng thái đơn hàng hiện tại.</p>
                             </div>
-                            <div className="space-y-5 flex-1 flex flex-col justify-center">
-                                {statusEntries.map(([status, count]) => {
-                                    const config = STATUS_CONFIG[status] || { label: status, color: 'bg-gray-500', text: 'text-gray-700', bg: 'bg-gray-100' };
-                                    const percentage = ((count / (overview.totalOrders || 1)) * 100).toFixed(1);
-                                    
-                                    return (
-                                        <div key={status} className="group">
-                                            <div className="flex justify-between items-center text-sm font-medium mb-2">
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`w-2.5 h-2.5 rounded-full ${config.color}`}></span>
-                                                    <span className="text-gray-700">{config.label}</span>
-                                                </div>
-                                                <span className="text-gray-900 font-bold">{count} <span className="text-gray-400 font-normal text-xs">({percentage}%)</span></span>
-                                            </div>
-                                            <div className="h-2.5 rounded-full bg-gray-100 overflow-hidden">
-                                                <div
-                                                    className={`h-full rounded-full ${config.color} transition-all duration-1000 ease-out`}
-                                                    style={{ width: `${percentage}%` }}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                            <div className="flex-1 w-full min-h-[300px] mt-4">
+                                {statusData.length > 0 ? (
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={statusData}
+                                                cx="50%"
+                                                cy="45%"
+                                                innerRadius={60}
+                                                outerRadius={100}
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                                stroke="none"
+                                            >
+                                                {statusData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip 
+                                                formatter={(value) => [value, 'Đơn hàng']}
+                                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                            />
+                                            <Legend 
+                                                verticalAlign="bottom" 
+                                                height={36} 
+                                                iconType="circle" 
+                                                formatter={(value, entry) => <span className="text-sm text-gray-700 font-medium mr-2">{value}</span>}
+                                            />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-gray-400">
+                                        Chưa có đơn hàng nào
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
