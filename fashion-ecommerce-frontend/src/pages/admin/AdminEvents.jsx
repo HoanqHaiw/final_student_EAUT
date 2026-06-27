@@ -13,6 +13,17 @@ const formatDate = (date) => {
   });
 };
 
+// Convert ISO date string (from MongoDB) to local datetime-local format
+const toLocalDatetimeString = (isoString) => {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  if (isNaN(d)) return '';
+  // Format: YYYY-MM-DDTHH:mm adjusted to local timezone
+  const offset = d.getTimezoneOffset() * 60000;
+  const localDate = new Date(d - offset);
+  return localDate.toISOString().slice(0, 16);
+};
+
 const defaultEventList = [
   {
     _id: 'default-1',
@@ -120,8 +131,8 @@ export default function AdminEvents() {
         details: Array.isArray(event.details) ? event.details.join('\n') : event.details || '',
         ctaLabel: event.ctaLabel || 'Khám phá bộ sưu tập',
         ctaLink: event.ctaLink || '/products',
-        startDate: event.startDate ? event.startDate.slice(0, 16) : '',
-        endDate: event.endDate ? event.endDate.slice(0, 16) : '',
+        startDate: toLocalDatetimeString(event.startDate),
+        endDate: toLocalDatetimeString(event.endDate),
         isActive: event.isActive !== false
       });
     } else {
@@ -156,6 +167,10 @@ export default function AdminEvents() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.startDate) {
+      setError('Vui lòng chọn thời gian bắt đầu.');
+      return;
+    }
     setLoading(true);
     setError('');
     try {
@@ -397,7 +412,6 @@ export default function AdminEvents() {
                     name="startDate"
                     value={formData.startDate}
                     onChange={handleChange}
-                    required
                     className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:border-black transition"
                   />
                 </div>
